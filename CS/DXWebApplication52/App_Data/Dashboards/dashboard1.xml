@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Dashboard>
+  <Title Text="Sample Dashboard" />
+  <DataSources>
+    <SqlDataSource Name="SalesPerson" ComponentName="DataSource1">
+      <Connection Name="NWindConnectionString" FromAppConfig="true" />
+      <Query Type="SelectQuery" Name="SalesPerson">
+        <Tables>
+          <Table Name="SalesPerson" />
+        </Tables>
+        <Columns>
+          <AllColumns Table="SalesPerson" />
+        </Columns>
+      </Query>
+      <ConnectionOptions CloseConnection="true" />
+    </SqlDataSource>
+  </DataSources>
+  <Items>
+    <Chart ComponentName="chartDashboardItem1" Name="Chart 1" DataSource="DataSource1" DataMember="SalesPerson">
+      <DataItems>
+        <Measure DataMember="Extended Price" DefaultId="DataItem0" />
+        <Dimension DataMember="OrderDate" DefaultId="DataItem1" />
+        <Dimension DataMember="Country" DefaultId="DataItem2" />
+      </DataItems>
+      <SeriesDimensions>
+        <SeriesDimension DefaultId="DataItem2" />
+      </SeriesDimensions>
+      <Arguments>
+        <Argument DefaultId="DataItem1" />
+      </Arguments>
+      <Panes>
+        <Pane Name="Pane 1">
+          <Series>
+            <Simple>
+              <Value DefaultId="DataItem0" />
+            </Simple>
+          </Series>
+        </Pane>
+      </Panes>
+    </Chart>
+    <ListBox ComponentName="listBoxDashboardItem1" Name="List Box 1" DataSource="DataSource1" DataMember="SalesPerson">
+      <DataItems>
+        <Dimension DataMember="CategoryName" DefaultId="DataItem0" />
+      </DataItems>
+      <FilterDimensions>
+        <Dimension DefaultId="DataItem0" />
+      </FilterDimensions>
+    </ListBox>
+    <CustomItem ComponentName="customItemDashboardItem1" Name="Funnel Chart 1" DataSource="DataSource1" DataMember="SalesPerson" CustomItemType="funnelChartCustomItem">
+      <DataItems>
+        <Measure DataMember="Quantity" DefaultId="DataItem0" />
+        <Dimension DataMember="CategoryName" ColoringMode="Hue" DefaultId="DataItem1" />
+      </DataItems>
+      <SliceTables>
+        <SliceTable Name="SliceTable1">
+          <Dimensions>
+            <Dimension DefaultId="DataItem1" />
+          </Dimensions>
+          <Measures>
+            <Measure DefaultId="DataItem0" />
+          </Measures>
+        </SliceTable>
+      </SliceTables>
+      <InteractivityTargets>
+        <Dimension DefaultId="DataItem1" />
+      </InteractivityTargets>
+      <ColoringDimensions>
+        <Dimension DefaultId="DataItem1" />
+      </ColoringDimensions>
+      <CustomMetadata>
+        <measureValue DefaultId="DataItem0" />
+        <dimensionValue ItemType="Dimension" DefaultId="DataItem1" />
+      </CustomMetadata>
+    </CustomItem>
+  </Items>
+  <LayoutTree>
+    <LayoutGroup Weight="100">
+      <LayoutItem DashboardItem="listBoxDashboardItem1" Weight="34.589299171062549" />
+      <LayoutGroup Orientation="Vertical" Weight="165.41070082893745">
+        <LayoutItem DashboardItem="chartDashboardItem1" Weight="165.41070082893745" />
+        <LayoutItem DashboardItem="customItemDashboardItem1" Weight="165.41070082893745" />
+      </LayoutGroup>
+    </LayoutGroup>
+  </LayoutTree>
+</Dashboard>
