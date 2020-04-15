@@ -49,77 +49,78 @@
 
         this.dxFunnelWidget = null;
         this.dxFunnelWidgetSettings = undefined;
-
-        this._getDataSource = function () {
-            var clientData = [];
-            if (this.getBindingValue('measureValue').length > 0) {
-                this.iterateData(function (dataRow) {
-                    clientData.push({
-                        measureValue: dataRow.getValue('measureValue')[0],
-                        dimensionValue: dataRow.getValue('dimensionValue')[0] || '',
-                        dimensionDisplayText: dataRow.getDisplayText('dimensionValue')[0],
-                        measureDisplayText: dataRow.getDisplayText('measureValue')[0],
-                        dimensionColor: dataRow.getColor('dimensionValue')[0],
-                        clientDataRow: dataRow
-                    });
-                });
-            }
-            return clientData;
-        };
-
-        this._getDxFunnelWidgetSettings = function () {
-            var _this = this;
-            return {
-                dataSource: this._getDataSource(),
-                argumentField: "dimensionValue",
-                valueField: "measureValue",
-                colorField: "dimensionColor",
-                selectionMode: "multiple",
-                label: {
-                    customizeText: function (e) {
-                        return e.item.data.dimensionDisplayText + ': ' + e.item.data.measureDisplayText;
-                    },
-                    position: this.getPropertyValue('labelPositionProperty').toLowerCase()
-                },
-                onItemClick: function (e) {
-                    _this.setMasterFilter(e.item.data.clientDataRow);
-                }
-            };
-        };
-
-        this.setSelection = function () {
-            var _this = this;
-            this.dxFunnelWidget.getAllItems().forEach(function (item) {
-                item.select(_this.isSelected(item.data.clientDataRow));
-            });
-        };
-
-        this.clearSelection = function () {
-            this.dxFunnelWidget.clearSelection();
-        };
-
-        this.setSize = function (width, height) {
-            Object.getPrototypeOf(this).setSize.call(this, width, height);
-            this.dxFunnelWidget.render();
-        };
-
-        this.renderContent = function ($element, changeExisting) {
-            if (!changeExisting) {
-                var element = $element.jquery ? $element[0] : $element;
-
-                while(element.firstChild)
-                    element.removeChild(element.firstChild);
-
-                var div = document.createElement('div');
-                element.appendChild(div);
-
-                this.dxFunnelWidget = new dxFunnel(div, this._getDxFunnelWidgetSettings());
-            } else {
-                this.dxFunnelWidget.option(this._getDxFunnelWidgetSettings());
-            }
-        };
     }
     FunnelChartItemViewer.prototype = Object.create(Dashboard.CustomItemViewer.prototype);
+    FunnelChartItemViewer.prototype.constructor = FunnelChartItemViewer;
+
+    FunnelChartItemViewer.prototype._getDataSource = function () {
+        var clientData = [];
+        if (this.getBindingValue('measureValue').length > 0) {
+            this.iterateData(function (dataRow) {
+                clientData.push({
+                    measureValue: dataRow.getValue('measureValue')[0],
+                    dimensionValue: dataRow.getValue('dimensionValue')[0] || '',
+                    dimensionDisplayText: dataRow.getDisplayText('dimensionValue')[0],
+                    measureDisplayText: dataRow.getDisplayText('measureValue')[0],
+                    dimensionColor: dataRow.getColor('dimensionValue')[0],
+                    clientDataRow: dataRow
+                });
+            });
+        }
+        return clientData;
+    };
+
+    FunnelChartItemViewer.prototype._getDxFunnelWidgetSettings = function () {
+        var _this = this;
+        return {
+            dataSource: this._getDataSource(),
+            argumentField: "dimensionValue",
+            valueField: "measureValue",
+            colorField: "dimensionColor",
+            selectionMode: "multiple",
+            label: {
+                customizeText: function (e) {
+                    return e.item.data.dimensionDisplayText + ': ' + e.item.data.measureDisplayText;
+                },
+                position: this.getPropertyValue('labelPositionProperty').toLowerCase()
+            },
+            onItemClick: function (e) {
+                _this.setMasterFilter(e.item.data.clientDataRow);
+            }
+        };
+    };
+
+    FunnelChartItemViewer.prototype.setSelection = function () {
+        var _this = this;
+        this.dxFunnelWidget.getAllItems().forEach(function (item) {
+            item.select(_this.isSelected(item.data.clientDataRow));
+        });
+    };
+
+    FunnelChartItemViewer.prototype.clearSelection = function () {
+        this.dxFunnelWidget.clearSelection();
+    };
+
+    FunnelChartItemViewer.prototype.setSize = function (width, height) {
+        Object.getPrototypeOf(FunnelChartItemViewer.prototype).setSize.call(this, width, height);
+        this.dxFunnelWidget.render();
+    };
+
+    FunnelChartItemViewer.prototype.renderContent = function ($element, changeExisting) {
+        if (!changeExisting) {
+            var element = $element.jquery ? $element[0] : $element;
+
+            while(element.firstChild)
+                element.removeChild(element.firstChild);
+
+            var div = document.createElement('div');
+            element.appendChild(div);
+
+            this.dxFunnelWidget = new dxFunnel(div, this._getDxFunnelWidgetSettings());
+        } else {
+            this.dxFunnelWidget.option(this._getDxFunnelWidgetSettings());
+        }
+    };
     
     function FunnelChartItem(dashboardControl) {
         Dashboard.ResourceManager.registerIcon(svgIcon);
