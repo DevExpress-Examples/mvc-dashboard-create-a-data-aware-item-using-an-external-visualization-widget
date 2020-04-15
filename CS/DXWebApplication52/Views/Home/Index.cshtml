@@ -2,10 +2,7 @@
     function onBeforeRender(sender) {
         var dashboardControl = sender.GetDashboardControl();
         dashboardControl.registerExtension(new DevExpress.Dashboard.DashboardPanelExtension(dashboardControl));
-        //...
-        var FUNNELCHART_ITEM_ICON = '<svg id="funnelChartItemIcon" viewBox="0 0 24 24"><path stroke="#ffffff" fill="#f442ae" d="M12 2 L2 22 L22 22 Z" /></svg>';
-        DevExpress.Dashboard.ResourceManager.registerIcon(FUNNELCHART_ITEM_ICON);
-        dashboardControl.registerExtension(funnelChartItem(dashboardControl));
+        dashboardControl.registerExtension(new FunnelChartItem(dashboardControl));
     }
 </script>
 @Html.DevExpress().Dashboard(settings => {
