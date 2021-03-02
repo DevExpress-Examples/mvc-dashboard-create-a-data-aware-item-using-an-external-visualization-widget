@@ -114,6 +114,8 @@
                 element.removeChild(element.firstChild);
 
             var div = document.createElement('div');
+            div.style.width = "100%";
+            div.style.height = "100%";
             element.appendChild(div);
 
             this.dxFunnelWidget = new dxFunnel(div, this._getDxFunnelWidgetSettings());
